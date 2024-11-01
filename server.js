@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
-const { readFromFile, readAndAppend } = require("./helpers/fsUtils");
+const { readFromFile, readAndAppend, writeToFile } = require("./helpers/fsUtils");
 
 
 // setting the port on which express application will start
@@ -44,7 +44,23 @@ app.post("/api/notes", (request, response) => {
     }
 })
 
+app.delete("/api/notes/:id", (request, response)=> {
+    const noteId = request.params.id;
 
+
+  readFromFile('./db/db.json')
+    .then((data) => JSON.parse(data))
+    .then((json) => {
+      // Make a new array of all tips except the one with the ID provided in the URL
+      const result = json.filter((note) => note.id !== noteId);
+
+      // Save that array to the filesystem
+      writeToFile('./db/db.json', result);
+
+      // Respond to the DELETE request
+      response.json(`Item ${noteId} has been deleted 🗑️`);
+    });
+})
 
 // starting the  app on th the port defined above
 app.listen(PORT, () => {
