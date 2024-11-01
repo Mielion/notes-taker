@@ -5,7 +5,7 @@ const { readFromFile, readAndAppend, writeToFile } = require("./helpers/fsUtils"
 
 
 // setting the port on which express application will start
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // initializing the app to express
 const app = express();
@@ -23,8 +23,6 @@ app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'))
 })
 
-
-
 app.get("/api/notes", (request, response) => {
     readFromFile("./db/db.json")
         .then((data) => response.json(JSON.parse(data)));
@@ -40,6 +38,8 @@ app.post("/api/notes", (request, response) => {
             text
         }
         readAndAppend(newNote, "./db/db.json")
+        readFromFile("./db/db.json")
+        .then((data) => response.json(JSON.parse(data)));
     } else {
         response.json("Error in adding note");
     }
