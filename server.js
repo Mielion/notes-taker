@@ -40,7 +40,6 @@ app.post("/api/notes", (request, response) => {
             text
         }
         readAndAppend(newNote, "./db/db.json")
-            .then((data) => response.json(JSON.parse(data)));
     } else {
         response.json("Error in adding note");
     }
