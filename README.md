@@ -17,3 +17,7 @@ Run the application using the following command:
   ```bash
   npm start
 ```
+
+## Deployment
+Preview the app at:
+ https://notes-taker-5uo3.onrender.com/
